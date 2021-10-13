@@ -3,6 +3,7 @@
 ##  "Mediabox" plugin for WDTV Live Media player
 
 **Instruments:**  
+
 Software:  
   1. Openstack (microstack)  
   2. Terraform  
@@ -11,6 +12,7 @@ Software:
   5. Ubuntu (desktop, servers)  
   6. VSCode  
   7. Golang, php  
+
 Hardware:  
   1. WDTV Live Media player  
   2. Desktop (6Gb AMD Phenom X4 945)  
