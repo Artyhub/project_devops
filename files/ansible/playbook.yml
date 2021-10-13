@@ -1,0 +1,55 @@
+---
+- name: Connection test and install openjdk for Jenkins
+  hosts: all
+  become: yes
+  gather_facts: no
+
+  tasks:
+
+  - name: Ping servers
+    ping:
+
+  - name: Run the equivalent of "apt-get update"
+    apt:
+      update_cache: yes
+  
+  - name: Disable timers for unattended upgrade and unattended-upgades service.
+    raw: systemctl disable --now {{item}}
+    with_items:
+      - 'apt-daily.timer'
+      - 'apt-daily-upgrade.timer'
+      - 'unattended-upgrades.service'
+  
+  - name: Reload systemctl daemon to apply the new changes
+    raw: systemctl daemon-reload
+
+#  - name: Remove "unattended-upgrades" package
+#    apt:
+#      name: unattended-upgrades
+#      state: absent
+
+  - name: Install OpenJDK 11
+    apt:
+      name: openjdk-11-jdk
+      state: latest
+
+  - name: Install mc
+    apt:
+      name: mc
+      state: latest
+
+  - name: Jenkins check directory.
+    ansible.builtin.stat:
+      path: /home/ubuntu/jenkins
+    register: j_folder
+
+  - name: "echo if directory already existed"
+    ansible.builtin.debug:
+      msg: "the jboss directory is already existed"
+    when: j_folder.stat.exists
+
+  - name: "Jenkins Create directory if not exists"
+    file:
+      path: /home/ubuntu/jenkins
+      state: directory
+    when: j_folder.stat.exists == false

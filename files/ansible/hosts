@@ -1,0 +1,13 @@
+[testing_server]
+servertest ansible_host=10.20.20.164
+
+[staging_server]
+serverstage ansible_host=10.20.20.196
+
+[test_stage:children]
+testing_server
+staging_server
+
+[test_stage:vars]
+ansible_user=ubuntu
+
